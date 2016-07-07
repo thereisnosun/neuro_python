@@ -16,6 +16,16 @@ import gzip
 # Third-party libraries
 import numpy as np
 
+
+def pickle_data():
+	with open('../data/mnist.pkl', 'rb') as f:
+		u = pickle._Unpickler(f)
+		u.encoding = 'latin1'
+		p = u.load()
+		print(p)
+
+
+
 def load_data():
     """Return the MNIST data as a tuple containing the training data,
     the validation data, and the test data.
@@ -40,7 +50,7 @@ def load_data():
     below.
     """
     f = gzip.open('../data/mnist.pkl.gz', 'rb')
-    training_data, validation_data, test_data = pickle.load(f)
+    training_data, validation_data, test_data = pickle.load(f, encoding='latin1')
     f.close()
     return (training_data, validation_data, test_data)
 

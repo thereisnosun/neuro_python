@@ -17,17 +17,18 @@ class Network(object):
 			a = sigmoid(np.dot(w, a) + b)
 		return a
 
-	def SGD(self, trainign_data, epochs, mini_batch_size, eta, test_data=None):
-		n = len(trainign_data)
+	def SGD(self, training_data, epochs, mini_batch_size, eta, test_data=None):
+		training_data_list = list(training_data)
+		n = len(training_data_list)
 		for j in range(epochs):
-			random.shuffle(trainign_data)
+			random.shuffle(training_data_list)
 			mini_batches = [
-				training_data[k:k+mini_batch_size]
-				for k in xrange(0, n, mini_batches)]
-			for mini_batches in mini_batches:
+				training_data_list[k:k+mini_batch_size]
+				for k in range(0, n, mini_batch_size)]
+			for mini_batch in mini_batches:
 				self.update_mini_batch(mini_batch, eta)
 			if test_data:
-				n_test = len(test_data)
+				n_test = len(list(test_data))
 				print ("Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data), n_test))
 			else:
 				print ("Epoch {0} complete".format(j))
@@ -38,7 +39,7 @@ class Network(object):
 		for x, y in mini_batch:
 			delta_nabla_b, delta_nabla_w = self.backprop(x, y)
 			nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
-			nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delata_nabla_w)]
+			nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
 		self.weight = [w - (eta/len(mini_batch))*nw
 			for w, nw in zip(self.weights, nabla_w)]
 		self.biases = [b - (eta/len(mini_batch))*nb
@@ -58,7 +59,7 @@ class Network(object):
 		delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
 		nabla_b[-1] = delta
 		nabla_w[-1] = np.dot(delta, activations[-2].transpose())
-		for lastlayer in xrange(2, self.num_layers):
+		for lastlayer in range(2, self.num_layers):
 			z = zs[-lastlayer]
 			sp = sigmoid_prime(z)
 			delta = np.dot(self.weights[-lastlayer + 1].transpose(), delta) *sp
@@ -72,7 +73,7 @@ class Network(object):
 			for (x, y) in test_data]
 		return sum(int(x==y) for x, y in test_data)
 
-	def cost_derivate(self, output_activations, y):
+	def cost_derivative(self, output_activations, y):
 		return (output_activations - y)
 
 
