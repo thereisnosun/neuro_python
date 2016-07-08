@@ -17,12 +17,11 @@ import gzip
 import numpy as np
 
 
-def pickle_data():
+def unpickle_data():
 	with open('../data/mnist.pkl', 'rb') as f:
 		u = pickle._Unpickler(f)
-		u.encoding = 'latin1'
-		p = u.load()
-		print(p)
+		u.encoding = 'bytes'
+		return u.load()
 
 
 
@@ -50,7 +49,7 @@ def load_data():
     below.
     """
     f = gzip.open('../data/mnist.pkl.gz', 'rb')
-    training_data, validation_data, test_data = pickle.load(f, encoding='latin1')
+    training_data, validation_data, test_data = pickle.load(f, fix_imports=True, encoding='bytes')
     f.close()
     return (training_data, validation_data, test_data)
 
