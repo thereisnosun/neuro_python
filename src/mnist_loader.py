@@ -19,8 +19,7 @@ import numpy as np
 
 def unpickle_data():
 	with open('../data/mnist.pkl', 'rb') as f:
-		u = pickle._Unpickler(f)
-		u.encoding = 'bytes'
+		u = pickle._Unpickler(f, fix_imports=True, encoding='bytes')
 		return u.load()
 
 
@@ -74,7 +73,7 @@ def load_data_wrapper():
     the training data and the validation / test data.  These formats
     turn out to be the most convenient for use in our neural network
     code."""
-    tr_d, va_d, te_d = load_data()
+    tr_d, va_d, te_d = unpickle_data()
     training_inputs = [np.reshape(x, (784, 1)) for x in tr_d[0]]
     training_results = [vectorized_result(y) for y in tr_d[1]]
     training_data = zip(training_inputs, training_results)

@@ -1,9 +1,6 @@
 import random
 import numpy as np
 
-def sigmoid(z):
-		return 1.0/(1.0+np.exp(-z))
-
 class Network(object):
 
 	def __init__(self, sizes):
@@ -19,6 +16,7 @@ class Network(object):
 
 	def SGD(self, training_data, epochs, mini_batch_size, eta, test_data=None):
 		training_data_list = list(training_data)
+		test_data_list = list(test_data)
 		n = len(training_data_list)
 		for j in range(epochs):
 			random.shuffle(training_data_list)
@@ -28,8 +26,8 @@ class Network(object):
 			for mini_batch in mini_batches:
 				self.update_mini_batch(mini_batch, eta)
 			if test_data:
-				n_test = len(list(test_data))
-				print ("Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data), n_test))
+				n_test = len(test_data_list)
+				print ("Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data_list), n_test))
 			else:
 				print ("Epoch {0} complete".format(j))
 
