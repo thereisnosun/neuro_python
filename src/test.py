@@ -1,18 +1,18 @@
 import mnist_loader
 import network
-
-
-
-# training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
-# net = network.Network([784, 30, 10])
-# net.SGD(training_data, 30, 10, 3.0, test_data = test_data)
-
-
 import network2
-training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
-net2 = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost)
-net2.large_weight_initializer()
-net2.SGD(training_data, 30, 10, 0.5, evaluation_data=test_data, monitor_evaluation_accuracy=True)
+
+def test_quadratic_cost():
+	training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+	net = network.Network([784, 30, 10])
+	net.SGD(training_data, 30, 10, 3.0, test_data = test_data)
+
+def test_cross_entropy_cost():
+	training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+	net2 = network2.Network([784, 30, 10], cost=network2.CrossEntropyCost)
+	net2.large_weight_initializer()
+	net2.SGD(training_data, 30, 10, 0.5, evaluation_data=test_data, monitor_evaluation_accuracy=True)
+
 
 # import network
 # from mnist_load import MnistLoad
